@@ -24,5 +24,15 @@ namespace Demo.View
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void loginClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
