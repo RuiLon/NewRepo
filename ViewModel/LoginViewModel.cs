@@ -45,6 +45,7 @@ namespace Demo.ViewModel
             this.LoginCommand = new CommandBase();
             this.LoginCommand.DoExecute = new Action<object>(DoLogin);
             this.LoginCommand.DoCanExecute = new Func<object, bool>((o) => { return true; });
+            dataBase.close();
         }
 
         private void DoLogin(object o)
