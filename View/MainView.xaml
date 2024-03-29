@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Demo"
-        mc:Ignorable="d"
+        xmlns:local="clr-namespace:Demo.View"
+        xmlns:common="clr-namespace:Demo.Common"
+        mc:Ignorable="d" Name="loginWindows"
         Title="系统登录" Height="330" Width="430"
         FontFamily="Microsoft YaHei" FontWeight="ExtraLight"
         ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
@@ -23,10 +24,15 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <ControlTemplate TargetType="Button" x:Key="LoginButton">
-            <Border Background="#007dfa">
+        <ControlTemplate TargetType="Button" x:Key="LoginButtonTemplate">
+            <Border Background="#007dfa" Name="login">
                 <ContentControl Content="{TemplateBinding Content}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"></ContentControl>
             </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="login" Property="Background" Value="#00aaff"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
         </ControlTemplate>
         
         
@@ -171,8 +177,17 @@
                 <RowDefinition Height="13*"/>
                 <RowDefinition Height="20*"/>
             </Grid.RowDefinitions>
-            <Border Background="#00aaff" CornerRadius="10,10,0,0"></Border>
-            <Button VerticalAlignment="Top" HorizontalAlignment="Right" Width="43" Height="33" Template="{StaticResource CloseButtonTemplate}" Click="Button_Click"></Button>
+            <Border Background="#00aaff" CornerRadius="10,10,0,0" MouseLeftButtonDown ="WindMove_LeftButtonDown" ></Border>
+            <Button VerticalAlignment="Top" 
+                    HorizontalAlignment="Right" Width="43" Height="33" 
+                    Template="{StaticResource CloseButtonTemplate}" 
+                    Click="Button_Click" 
+                    Command="{Binding CloseWindowsCommand}"
+                    CommandParameter="{Binding ElementName=loginWindows}"
+                    >
+                
+            </Button>
+            
             <StackPanel VerticalAlignment="Center">
                 <Border Width="100" Height="100" CornerRadius="50">
                     <Border.Background>
@@ -186,9 +201,17 @@
                     <RowDefinition Height="20*"/>
                     <RowDefinition Height="20*"/>
                     <RowDefinition Height="20*"/>
+                    <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <TextBox Style="{DynamicResource UserNameTextBoxStyle}" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="210" Height="30" Text=""></TextBox>
-                <PasswordBox Style="{DynamicResource PasswordBoxStyle}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="210" Height="30" ></PasswordBox>
+                <TextBox Style="{DynamicResource UserNameTextBoxStyle}" 
+                         Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                         Width="210" Height="30" 
+                         Text="{Binding LoingModel.UserName}" FontSize="20"></TextBox>
+                <PasswordBox Style="{DynamicResource PasswordBoxStyle}" 
+                             Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                             Width="210" Height="30" 
+                             common:PassWordHelper.Attach="True" 
+                             common:PassWordHelper.Password="{Binding LoginModel.Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></PasswordBox>
                 <Border Grid.Row="2">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -209,9 +232,12 @@
                     </Grid>
                 </Border>
                 <Border  Grid.Row="3" Height="30" Width="210">
-                    <Button Content="登录/注册" Click="loginClick" Template="{StaticResource LoginButton}"></Button>
+                    <Button Content="登录/注册" Click="loginClick" Template="{StaticResource LoginButtonTemplate}" Command="{Binding LoginCommand}"></Button>
                 </Border>
-                
+                <Border Grid.Row="4" Height="15" Width="210">
+                    <TextBlock FontSize="13" Foreground="#aa0000" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding ErrorMessage}"></TextBlock>
+                </Border >
+
             </Grid>
         </Grid>
     </Border>

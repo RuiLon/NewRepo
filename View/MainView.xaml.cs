@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Demo.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,18 @@ namespace Demo.View
         public MainView()
         {
             InitializeComponent();
+
+            this.DataContext = new LoginViewModel();
+
+        }
+        
+        private void WindMove_LeftButtonDown(object sender,MouseButtonEventArgs e)
+        {   
+            //拖拽窗口移动
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -31,6 +44,11 @@ namespace Demo.View
         }
 
         private void loginClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
 
         }
